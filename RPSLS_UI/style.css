@@ -109,40 +109,6 @@ button, input[type="submit"]{
   display:block;
 }
 
-
-.modal1 {
-  display: none; /* Hidden by default */
-  min-height: 100vh;
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 250;
-  top: 200;
-  z-index: 1; /* Sit on top */
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-}
-
-.modal-content1 {
-  border: .4rem solid black;
-  border-radius: .5rem;
-  margin: 1rem;
-  font-size: 1.5rem;
-  padding: 1rem .5rem;
-  transition: all .07s ease;
-  width: 42rem;
-  text-align: center;
-  color: white;
-  background: rgba(0,0,0,0.4);
-  text-shadow: 0 0 .5rem black;
-}
-
-.modal-label {
-  font-size: 2.0rem;
-  text-transform: uppercase;
-  letter-spacing: .1rem;
-  color: #ffc600;
-}
-
 /* Modal Header */
 .modal-header {
   padding: 2px 16px;

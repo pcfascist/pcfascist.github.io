@@ -24,26 +24,21 @@ function addRound() {
 
 function scoreWin(winner) {
   if (winner == "com") {
-    if (computerWins >= 5) {fiveGameMatch();}
-    else {
     var computerBox = document.getElementById('computerWins')
     var newScore = document.createElement('num')
     newScore.textContent = computerWins;
     computerBox.lastChild.replaceWith(newScore);
     computerBox.classList.toggle('playing')
     }
-  }
   else{ 
-    if (playerWins >= 5) {fiveGameMatch();}
-    else {
     var playerBox = document.getElementById('playerWins')
     var newScore = document.createElement('num')
     newScore.textContent = playerWins;
     playerBox.lastChild.replaceWith(newScore);
     playerBox.classList.toggle('playing')
-    }
   }
   addRound()
+  if (playerWins == 5 || computerWins == 5) {fiveGameMatch()} else {return;}
 }
 
 function computerWin() {
@@ -229,8 +224,8 @@ function fiveGameMatch() {
   contentComputer.textContent = "Computer Wins: " + computerWins 
   contentPlayer.textContent = "Player Wins: " + playerWins;
   resultsBody.appendChild(content);
-  resultsBody.appendChild(contentComputer);
   resultsBody.appendChild(contentPlayer);
+  resultsBody.appendChild(contentComputer);
   modal.style.display = "block";
 };
 
