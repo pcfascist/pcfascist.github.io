@@ -11,6 +11,8 @@ function setGame() {
     box.appendChild(content);
     })};
 
+
+
 function addRound() {
   roundCounter ++
   var roundBox = document.getElementById('roundCounter')
@@ -100,7 +102,7 @@ function gameRound(hp) {
           return "My paper disproves Spock.\n\n"
         case "scissors":
           playerWin();
-          return "The scissors have cut my paper. \n"
+          return "Your scissors have cut my paper. \n"
         default:
           computerWin();
           return capitalize(cp) + " beats " + hp + ".\n\n"
@@ -178,14 +180,59 @@ function returnWin(winner) {
   }
 }
 
+function clearScore() {
+  computerWins = 0;
+  playerWins = 0;
+  roundCounter = 0;
+  var computerBox = document.getElementById('computerWins')
+  var newScore = document.createElement('num')
+  newScore.textContent = computerWins;
+  computerBox.lastChild.replaceWith(newScore);
+  var playerBox = document.getElementById('playerWins')
+  var newScore = document.createElement('num')
+  newScore.textContent = playerWins;
+  playerBox.lastChild.replaceWith(newScore);
+  var roundBox = document.getElementById('roundCounter')
+  var newRound = document.createElement('num')
+  newRound.textContent = roundCounter;
+  roundBox.lastChild.replaceWith(newRound);
+ 
+}
+
 function fiveGameMatch() {
+  var modal = document.getElementById("myModal");
+  var span = document.getElementsByClassName("close")[0];
+  var resultsBody = document.querySelector(".modal-body");
+  var resultsHeader = document.querySelector(".modal-header");
+  span.onclick = function() {
+    modal.style.display = "none";
+    while (resultsBody.firstChild) {
+      resultsBody.removeChild(resultsBody.lastChild);
+    }
+    resultsHeader.removeChild(resultsHeader.lastChild);
+    clearScore();
+  }
+  var content = document.createElement('p');
+  var contentComputer = document.createElement('p');
+  var contentPlayer = document.createElement('p');
+  var header = document.createElement('h2');
+
   if (computerWins < playerWins) {
-  
-    window.alert("Fasinating, you have defeated me.\nComputer Score: " + computerWins + "\nHuman Score: " + playerWins + "\n\n");
+    header.textContent = "Defeat!";
+    content.textContent = "Fasinating, you have defeated me." 
   }
   else {
-    window.alert("One day the game may be yours, today is not that day.\nComputer Score: " + computerWins + "\nHuman Score: " + playerWins + "\n\n");}
+    header.textContent = "Victory!";
+    content.textContent = "One day the game may be yours, today is not that day.";
   }
+  resultsHeader.appendChild(header);
+  contentComputer.textContent = "Computer Wins: " + computerWins 
+  contentPlayer.textContent = "Player Wins: " + playerWins;
+  resultsBody.appendChild(content);
+  resultsBody.appendChild(contentComputer);
+  resultsBody.appendChild(contentPlayer);
+  modal.style.display = "block";
+};
 
 function alertButton(e) {
   hp = `${this.value}`;
