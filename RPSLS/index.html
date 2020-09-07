@@ -2,10 +2,71 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-        <title>Let's Play RPSLS!</title>
-        <script type="text/javascript" src="./rpsls.js"> </script>
+        <title>Shall we play a game?</title>
+        
+        <link rel="stylesheet" href="style.css">
   </head>
-  <body>
-    <p>Nothing here yet.</p>
+  <body onload="setGame()">
+    <div class="score">
+      <div class="box" id="roundCounter">
+      <span class="label">Round</span>
+      </div>
+      <div class="box" id="playerWins">
+        <span class="label">P1</span>
+      </div>
+      <div class="box" id="computerWins">
+      <span class="label">COM</span>
+      </div>
+    </div>
+    <div class="plays">
+    <button class="button" role="button" value="rock">
+        <div data-key="82" class="key">
+        <kbd>R</kbd>
+        <span class="play">Rock</span>
+      </div>
+    </button>
+    <button class="button" role="button" value="paper">
+        <div data-key="80" class="key">
+        <kbd>P</kbd>
+        <span class="play">Paper</span>
+      </div>
+    </button>
+    <button class="button" role="button" value="scissors">
+        <div data-key="67" class="key">
+        <kbd>C</kbd>
+        <span class="play">Scissors</span>
+      </div>
+    </button>
+    <button class="button" role="button" value="lizard">
+      <div data-key="76" class="key">
+        <kbd>L</kbd>
+        <span class="play">Lizard</span>
+      </div>
+    </button>
+    <button class="button" role="button" value="spock">
+      <div data-key="83" class="key">
+        <kbd>S</kbd>
+        <span class="play">Spock</span>
+      </div>
+    </button>
+    </div>
+ <!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close">&times;</span>
+    </div>
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+      <b>created by jesse james johnson</b>
+    </div>
+  </div>
+
+</div>
+
   </body>
+  <script type="text/javascript" src="./rpsls.js"> </script>
 </html>

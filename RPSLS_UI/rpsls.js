@@ -71,7 +71,7 @@ function gameRound(hp) {
         case "paper":
           playerWin();
           return "Paper covers rock.\n\n"
-        case "Spock":
+        case "spock":
           playerWin();
           return "You have vaporized my rock with Spock!\n\n"
         default:

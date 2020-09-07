@@ -1,19 +1,55 @@
 let moves = ["rock","paper","scissors","lizard","spock"]
-var computerWins;
-var playerWins;
+let computerWins = 0;
+let playerWins = 0;
+let roundCounter = 0;
 
+/* Set game rounds and score to zero at start or restart */
+function setGame() {
+  document.querySelectorAll('.box').forEach(node => updateNumber(node.getAttributeNode('id').value,0)) /* todo: find a way to not use static zero just because I don't like using a static value here */
+};
+ 
+/* Update Score Boxes using targe and new value*/
+function updateNumber(target,value) {
+  var roundBox = document.getElementById(target)
+  var newText = document.createElement('num')
+  newText.textContent = value;
+  roundBox.lastChild.replaceWith(newText);
+  roundBox.classList.toggle('playing')
+}
+
+/* Increase round counter and graphic after each play */
+function addRound() {
+  roundCounter ++
+  updateNumber('roundCounter',roundCounter)
+}
+
+/* after each round check if a player has won the five games for the match */
+function checkWin() {
+  if (playerWins == 5 || computerWins == 5) {fiveWinsMatch();} else {addRound();}
+}
+
+/* Increment score for computer, check if player has won five games */
 function computerWin() {
  computerWins ++
- if (computerWins > 1) {return "My win tally is " + computerWins + " games.\n\n\n"}
- else {return "I have won one game.\n\n\n"}
+ updateNumber('computerWins',computerWins);
+ checkWin();
  }
 
- function playerWin() {
-  playerWins ++
-  if (playerWins > 1) {return "Your win tally is " + playerWins + " games.\n\n\n"}
-  else { return "You have won one game.\n\n\n"}
-  }
+/* Increment score for human, check if player has won five games */
+function playerWin() {
+playerWins ++
+updateNumber('playerWins',playerWins);
+checkWin();
+}
 
+/*return a random computer play from 'moves'*/ 
+function computerPlay() {
+  let itemCount = moves.length - 1;
+  num = randomNum(0,itemCount)
+  return moves[num];
+}
+
+/* Random Number to Select Computer Play */
 function randomNum(start,end) {
   let num = end + 10;
   ceilEnd = Math.ceil((end+1)/10)*10
@@ -25,114 +61,201 @@ function randomNum(start,end) {
   }
 }
 
-function computerPlay() {
-  let itemCount = moves.length - 1;
-  num = randomNum(0,itemCount)
-  return moves[num];
-}
-
-function humanPlay() {
-  var humanMove;
-  var count;
-  while (moves.indexOf(humanMove) == -1) {
-  if (count > 0) {
-    humanMove = prompt("Try again. What's your move player? (rock, paper, scissors, lizard, Spock)","rock")
-    humanMove = humanMove.toLowerCase()
-  }
-  else {
-  count = 0
-  humanMove = prompt("What is your move, player? (rock, paper, scissors, lizard, Spock)","rock")
-  humanMove = humanMove.toLowerCase()
-  count ++
-  }
-  }
-  return humanMove;
-}
-
-
+/* Process the round with each player's choice */
 function gameRound(hp) {
   let cp = computerPlay();
   if (hp === undefined) {return "I did not understand your play of" + hp}
-  if (cp == hp) { return "It is a draw. We both chose " + hp.replace("spock","Spock")}
+  if (cp == hp) { addRound(); return "It is a draw. We both chose " + hp.replace("spock","Spock")+". "}
   if (cp == "rock") {
       switch (hp) {
         case "paper":
-          return "You have beat me this time! Paper covers rock.\n\n" + playerWin();
-        case "Spock":
-          return "You have vaporized my rock with Spock!\n\n" + playerWin();
+          playerWin();
+          return "Paper covers rock.\n\n"
+        case "spock":
+          playerWin();
+          return "You have vaporized my rock with Spock!\n\n"
         default:
           computerWin();
-          return "I have won this round. " + cp + " beats " + hp + ".\n\n" + computerWin();;
+          return capitalize(cp) + " beats " + hp + ".\n\n"
     }
   }
    else if (cp == "paper") {
       switch (hp) {
         case "lizard":
-          return "The lizard ate my paper. You win.\n\n" + playerWin();
+          playerWin();
+          return "The lizard ate my paper. \n" 
         case "spock":
-          return "My paper disproves Spock. I win.\n\n" + computerWin();;
+          computerWin();
+          return "My paper disproves Spock.\n\n"
         case "scissors":
-          return "The scissors have cut my paper. You win.\n\n" + playerWin();
+          playerWin();
+          return "Your scissors have cut my paper. \n"
         default:
-          return "I have won this round. " + cp + " beats " + hp + ".\n\n" + computerWin();
+          computerWin();
+          return capitalize(cp) + " beats " + hp + ".\n\n"
     }
   }
     else if (cp == "scissors") {
       switch (hp) {
         case "rock":
-          return "Rock crushes my scissors. You win.\n\n" + playerWin();
+          playerWin();
+          return "Rock crushes my scissors.\n"
         case "spock":
-          return "My scissors are smashed by Spock! You win.\n\n" + playerWin();
+          playerWin();
+          return "My scissors are smashed by Spock!\n\n" 
         default:
-          return "I win this round. " + cp + " beats " + hp + ".\n\n" + computerWin();
+          computerWin();
+          return capitalize(cp) + " beats " + hp + ".\n\n" 
     }
 
   }
   else if (cp == "lizard") {
     switch (hp) {
       case "rock":
-        return "Rock crushes my lizard. \nYou win.\n\n" + playerWin();
+        playerWin();
+        return "Rock crushes my lizard.\n\n" 
       case "scissors":
-        return "Scissors decapitates my lizard! You win.\n\n" + playerWin();
+        playerWin();
+        return "Scissors decapitates my lizard! \n\n" 
       case "spock":
-        return "Lizard poisons Spock. I win.\n\n" + computerWins();
+        computerWin();
+        return "Lizard poisons Spock.\n\n"  
       default:
-        return "I have won this round. " + cp + " beats " + hp + ".\n\n" + computerWin();
+        computerWin();
+        return capitalize(cp) + " beats " + hp + ".\n\n" 
   }
 
 }
 else if (cp == "spock") {
   switch (hp) {
     case "paper":
-      return "Your paper disproves Spock. You win.\n\n" + playerWin();
+      playerWin();
+      return "Your paper disproves Spock.\n\n"
     case "lizard":
-      return "Your lizard poisons Spock! You win.\n\n" + playerWin();
+      playerWin();
+      return "Your lizard poisons Spock!\n\n"
     case "rock":
-      return "Spock vaporizes your rock. I win.\n\n" + computerWin()
+      computerWin();
+      return "Spock vaporizes your rock.\n\n"
     case "scissors":
-      return "Spock Smashes your scissors. I win.\n\n" + computerWin()
+      computerWin();
+      return "Spock Smashes your scissors. \n\n"
     default:
-      return "Red shirt dies. The choice" + hp + " found something broke.\n\n\n";
+      console.log ("HP: " + hp + " CPU: " + cp);
+      return "Red shirt dies. The choice " + hp + " found something broke.\n\n\n";
     }
 }
    else {
-     return "KHAN!!!" + hp + " " + cp + " found something broke.\n\n\n";
+    console.log ("HP: " + hp + " CPU: " + cp);
+    return "KHAN!!!" + hp + " " + cp + " found something broke.\n\n\n";
    }
 }
 
 
-function fiveGameMatch() {
-computerWins = 0
-playerWins = 0
-while (computerWins < 5 && playerWins < 5) {
-let hp = humanPlay();
-let gr = gameRound(hp);
-window.alert(gr);
+
+/* Display win after game round */
+function returnWin(winner) {
+  var scoreBox = document.querySelector('.score');
+  var winBox = document.querySelector('.win');
+  
+  if (winBox === null) {     
+    const content = document.createElement('div');
+    content.classList.add('win');
+    content.textContent = winner;
+    scoreBox.appendChild(content);
+  }
+  else{
+    
+    winBox.lastChild.replaceWith(winner);
+  }
 }
 
+/* reset game after a match winner */
+function clearScore() {
+  computerWins = 0;
+  playerWins = 0;
+  roundCounter = 0;
+  updateNumber('computerWins',computerWins)
+  updateNumber('playerWins',playerWins)
+  updateNumber('roundCounter',roundCounter)
+ 
 }
-fiveGameMatch();
-if (computerWins < playerWins) {
-  window.alert("Fasinating, you have defeated me.\nComputer Score: " + computerWins + "\nHuman Score: " + playerWins + "\n\n");
+
+/* Winner Modal Display at the Conclusion of a Match */
+function fiveWinsMatch() {
+  var modal = document.getElementById("myModal");
+  var span = document.getElementsByClassName("close")[0];
+  var resultsBody = document.querySelector(".modal-body");
+  var resultsHeader = document.querySelector(".modal-header");
+  span.onclick = function() {
+    modal.style.display = "none";
+    while (resultsBody.firstChild) {
+      resultsBody.removeChild(resultsBody.lastChild);
+    }
+    resultsHeader.removeChild(resultsHeader.lastChild);
+    clearScore();
+  }
+  var content = document.createElement('p');
+  var contentComputer = document.createElement('p');
+  var contentPlayer = document.createElement('p');
+  var header = document.createElement('h2');
+
+  if (computerWins < playerWins) {
+    header.textContent = "Defeat!";
+    content.textContent = "Fasinating, you have defeated me." 
+  }
+  else {
+    header.textContent = "Victory!";
+    content.textContent = "One day the game may be yours, today is not that day.";
+  }
+  resultsHeader.appendChild(header);
+  contentComputer.textContent = "Computer Wins: " + computerWins 
+  contentPlayer.textContent = "Player Wins: " + playerWins;
+  resultsBody.appendChild(content);
+  resultsBody.appendChild(contentPlayer);
+  resultsBody.appendChild(contentComputer);
+  modal.style.display = "block";
+};
+
+/* Handle Clicks from user */
+function alertButton(e) {
+  hp = `${this.value}`;
+  node = this.firstElementChild;
+  node.classList.toggle('playing')
+  let gr = gameRound(hp);
+  returnWin(gr);
+ }
+ 
+ /* Handle Key press from user */
+ function eventKey(e) {
+   var div = document.querySelector(`.key[data-key="${e.keyCode}"`);
+   var play = div.querySelector('.play')
+   hp = play.innerText.toLowerCase()
+   div.classList.toggle('playing');
+   let gr = gameRound(hp);
+   returnWin(gr);
+ };
+
+/* Reutrn the play name capitalized for when I haven't created a cleaver win message */
+function capitalize(play) {
+return play.charAt(0).toUpperCase() + play.slice(1)
 }
-else { window.alert("One day the game may be yours, today is not that day.\nComputer Score: " + computerWins + "\nHuman Score: " + playerWins + "\n\n");}
+
+/* Remove the highlight effect after the transition completes*/
+function removeTransition(e) {
+  if(e.propertyName !== 'transform') return;
+  this.classList.remove('playing');
+}
+
+/* Register Listeners */
+const buttons= document.querySelectorAll('.button');
+buttons.forEach(button => button.addEventListener('click', alertButton));
+
+document.addEventListener("keydown", eventKey);
+
+const allkeys = document.querySelectorAll('.key');
+allkeys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+
+const allBox = document.querySelectorAll('.box');
+allBox.forEach(box => box.addEventListener('transitionend', removeTransition));
