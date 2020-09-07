@@ -159,7 +159,7 @@ button, input[type="submit"]{
   animation-duration: 0.7s
 }
 
-/* Add Animation */
+/* Modal Animation */
 @-webkit-keyframes animatetop {
   from {top:-300px; opacity:0} 
   to {top:0; opacity:1}
@@ -170,7 +170,7 @@ button, input[type="submit"]{
   to {top:0; opacity:1}
 }
 
-/* The Close Button */
+/* Modal Close Button */
 .close {
   color: white;
   float: right;
@@ -185,8 +185,10 @@ button, input[type="submit"]{
   cursor: pointer;
 }
 
+/* Modal Body */
 .modal-body {padding: 2px 16px;}
 
+/* Modal Footer */
 .modal-footer {
   padding: 2rem .5rem;
   background-color: rgba(0,0,0,0.4);

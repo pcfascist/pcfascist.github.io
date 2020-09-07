@@ -3,61 +3,53 @@ let computerWins = 0;
 let playerWins = 0;
 let roundCounter = 0;
 
+/* Set game rounds and score to zero at start or restart */
 function setGame() {
-  boxes = document.querySelectorAll('.box').forEach(function setZero(node) {
-    var box = node;
-    var content = document.createElement('num');
-    content.textContent = 0; // use variable name here without using eval in the future.
-    box.appendChild(content);
-    })};
-
-
-
-function addRound() {
-  roundCounter ++
-  var roundBox = document.getElementById('roundCounter')
-  var newRound = document.createElement('num')
-  newRound.textContent = roundCounter;
-  roundBox.lastChild.replaceWith(newRound);
+  document.querySelectorAll('.box').forEach(node => updateNumber(node.getAttributeNode('id').value,0)) /* todo: find a way to not use static zero just because I don't like using a static value here */
+};
+ 
+/* Update Score Boxes using targe and new value*/
+function updateNumber(target,value) {
+  var roundBox = document.getElementById(target)
+  var newText = document.createElement('num')
+  newText.textContent = value;
+  roundBox.lastChild.replaceWith(newText);
   roundBox.classList.toggle('playing')
 }
 
-function scoreWin(winner) {
-  if (winner == "com") {
-    var computerBox = document.getElementById('computerWins')
-    var newScore = document.createElement('num')
-    newScore.textContent = computerWins;
-    computerBox.lastChild.replaceWith(newScore);
-    computerBox.classList.toggle('playing')
-    }
-  else{ 
-    var playerBox = document.getElementById('playerWins')
-    var newScore = document.createElement('num')
-    newScore.textContent = playerWins;
-    playerBox.lastChild.replaceWith(newScore);
-    playerBox.classList.toggle('playing')
-  }
-  addRound()
-  if (playerWins == 5 || computerWins == 5) {fiveGameMatch()} else {return;}
+/* Increase round counter and graphic after each play */
+function addRound() {
+  roundCounter ++
+  updateNumber('roundCounter',roundCounter)
 }
 
+/* after each round check if a player has won the five games for the match */
+function checkWin() {
+  if (playerWins == 5 || computerWins == 5) {fiveWinsMatch();} else {addRound();}
+}
+
+/* Increment score for computer, check if player has won five games */
 function computerWin() {
  computerWins ++
- scoreWin('com')
+ updateNumber('computerWins',computerWins);
+ checkWin();
  }
 
- function playerWin() {
-  playerWins ++
-  scoreWin('player')
-  }
+/* Increment score for human, check if player has won five games */
+function playerWin() {
+playerWins ++
+updateNumber('playerWins',playerWins);
+checkWin();
+}
 
-
+/*return a random computer play from 'moves'*/ 
 function computerPlay() {
   let itemCount = moves.length - 1;
   num = randomNum(0,itemCount)
   return moves[num];
 }
 
+/* Random Number to Select Computer Play */
 function randomNum(start,end) {
   let num = end + 10;
   ceilEnd = Math.ceil((end+1)/10)*10
@@ -69,6 +61,7 @@ function randomNum(start,end) {
   }
 }
 
+/* Process the round with each player's choice */
 function gameRound(hp) {
   let cp = computerPlay();
   if (hp === undefined) {return "I did not understand your play of" + hp}
@@ -83,7 +76,6 @@ function gameRound(hp) {
           return "You have vaporized my rock with Spock!\n\n"
         default:
           computerWin();
-          console.log ("HP: " + hp + " CPU: " + cp);
           return capitalize(cp) + " beats " + hp + ".\n\n"
     }
   }
@@ -159,6 +151,9 @@ else if (cp == "spock") {
    }
 }
 
+
+
+/* Display win after game round */
 function returnWin(winner) {
   var scoreBox = document.querySelector('.score');
   var winBox = document.querySelector('.win');
@@ -175,26 +170,19 @@ function returnWin(winner) {
   }
 }
 
+/* reset game after a match winner */
 function clearScore() {
   computerWins = 0;
   playerWins = 0;
   roundCounter = 0;
-  var computerBox = document.getElementById('computerWins')
-  var newScore = document.createElement('num')
-  newScore.textContent = computerWins;
-  computerBox.lastChild.replaceWith(newScore);
-  var playerBox = document.getElementById('playerWins')
-  var newScore = document.createElement('num')
-  newScore.textContent = playerWins;
-  playerBox.lastChild.replaceWith(newScore);
-  var roundBox = document.getElementById('roundCounter')
-  var newRound = document.createElement('num')
-  newRound.textContent = roundCounter;
-  roundBox.lastChild.replaceWith(newRound);
+  updateNumber('computerWins',computerWins)
+  updateNumber('playerWins',playerWins)
+  updateNumber('roundCounter',roundCounter)
  
 }
 
-function fiveGameMatch() {
+/* Winner Modal Display at the Conclusion of a Match */
+function fiveWinsMatch() {
   var modal = document.getElementById("myModal");
   var span = document.getElementsByClassName("close")[0];
   var resultsBody = document.querySelector(".modal-body");
@@ -229,6 +217,7 @@ function fiveGameMatch() {
   modal.style.display = "block";
 };
 
+/* Handle Clicks from user */
 function alertButton(e) {
   hp = `${this.value}`;
   node = this.firstElementChild;
@@ -237,7 +226,7 @@ function alertButton(e) {
   returnWin(gr);
  }
  
- 
+ /* Handle Key press from user */
  function eventKey(e) {
    var div = document.querySelector(`.key[data-key="${e.keyCode}"`);
    var play = div.querySelector('.play')
@@ -247,15 +236,18 @@ function alertButton(e) {
    returnWin(gr);
  };
 
+/* Reutrn the play name capitalized for when I haven't created a cleaver win message */
 function capitalize(play) {
 return play.charAt(0).toUpperCase() + play.slice(1)
 }
 
+/* Remove the highlight effect after the transition completes*/
 function removeTransition(e) {
   if(e.propertyName !== 'transform') return;
   this.classList.remove('playing');
 }
 
+/* Register Listeners */
 const buttons= document.querySelectorAll('.button');
 buttons.forEach(button => button.addEventListener('click', alertButton));
 
